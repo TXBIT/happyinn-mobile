@@ -1,0 +1,132 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <!-- <ion-back-button
+        routerLink="/home/tabs/manage"
+        routerDirection="backward"
+      ></ion-back-button> -->
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title text-center>My Pending Payments</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container *ngIf="!isLoading && payments && payments.length > 0">
+    <ion-virtual-scroll [items]="payments">
+      <section id="userBookings" *virtualItem="let payment">
+        <div *ngIf="payment.booking && payment.booking.rental" class="row">
+          <div class="col-md-4">
+            <div class="card text-center">
+              <div class="card-header">
+                Booking made by {{ payment.fromUser.username }}
+              </div>
+              <div class="card-block">
+                <ng-container>
+                  <h4 class="card-title">
+                    {{ payment.booking.rental.title }} -
+                    {{ payment.booking.rental.city }}
+                  </h4>
+                  <p class="card-text booking-desc">
+                    {{ payment.booking.rental.description }}
+                  </p>
+                  <p class="card-text booking-days">
+                    {{ payment.booking.startAt | formatDate }} -
+                    {{ payment.booking.endAt | formatDate }} |
+                    {{ payment.booking.days }} days
+                  </p>
+                  <p class="card-text booking-price">
+                    <span>Revenue: </span>
+                    <span class="booking-price-value"
+                      >${{ payment.amount / 100 }}</span
+                    >
+                  </p>
+
+                  <p class="card-text">
+                    <span>Status: </span>
+                    <span class="booking-price-value">{{
+                      payment.status
+                    }}</span>
+                  </p>
+
+                  <a
+                    *ngIf="payment.booking.rental"
+                    class="btn btn-danger"
+                    routerLink="/home/tabs/rentals/{{
+                      payment.booking.rental._id
+                    }}"
+                    >Go to Rental</a
+                  >
+                </ng-container>
+              </div>
+              <div
+                *ngIf="payment.booking && payment.booking.rental"
+                class="card-footer text-muted"
+              >
+                Created {{ payment.booking.createdAt | formatDate }}
+                <!-- booking createdAt -->
+
+                <div *ngIf="payment.status === 'pending'">
+                  <button
+                    class="btn btn-success"
+                    (click)="acceptPayment(payment)"
+                  >
+                    Confirm
+                  </button>
+                  &nbsp;
+                  <button
+                    class="btn btn-danger"
+                    (click)="declinePayment(payment)"
+                  >
+                    Decline
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </ion-virtual-scroll>
+  </ng-container>
+
+  <div
+    *ngIf="!isLoading && payments && payments.length === 0"
+    class="alert alert-warning"
+  >
+    You have no pending payments.
+  </div>
+</ion-content>
+
+<!-- <p *ngFor="let booking of bookings">
+  {{ booking.startAt }}
+  {{ booking.endAt }}
+</p> -->
+<!-- <ion-row>
+  <ion-col size-sm="8" offset-sm="2">
+    <ion-virtual-scroll [items]="bookings" approxItemHeight="100px">
+      <ion-card
+        routerDirection="forward"
+        *virtualItem="let booking"
+        [routerLink]="['/', 'home', 'tabs', 'rentals', booking.rental._id]"
+      >
+        <ion-card-header>
+          <h2 text-capitalize text-center>{{ booking.rental.title }}</h2>
+        </ion-card-header>
+        <ion-item detail>
+          <img [src]="booking.rental.image" alt="" class="card-image" />
+        </ion-item>
+        <ion-card-content>
+          <h6 class="card-subtitle {{ booking.rental.category }}" text-capitalize>
+            {{ booking.rental.shared ? 'Shared' : 'Entire' }}
+            {{ booking.rental.category }} &#183;
+            {{ booking.rental.city }}
+          </h6>
+          <h4 class="card-title">{{ booking.rental.title }}</h4>
+          <p class="card-text">
+            ${{ booking.rental.dailyRate }} per Night &#183; Free Cancellation
+          </p>
+        </ion-card-content>
+      </ion-card>
+    </ion-virtual-scroll>
+  </ion-col>
+</ion-row> -->

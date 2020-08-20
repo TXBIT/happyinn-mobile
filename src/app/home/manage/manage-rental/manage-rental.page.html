@@ -1,0 +1,80 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <!-- <ion-back-button routerLink="/home/tabs/manage" routerDirection="backward"></ion-back-button> -->
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title text-center>My Rentals</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container *ngIf="!isLoading && rentals && rentals.length > 0">
+    <ion-virtual-scroll [items]="rentals">
+      <section id="userRentals" *virtualItem="let rental; let i = index">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card text-center">
+              <div class="card-header">
+                {{ rental.title | lowercase | ucwords }}
+              </div>
+              <div class="card-block">
+                <a
+                  class="btn btn-success"
+                  routerLink="/home/tabs/rentals/{{ rental._id }}"
+                  >Go to Rental</a
+                >
+                &nbsp;
+                <span *ngIf="rental.bookings.length > 0">
+                  <app-manage-rental-booking
+                    [bookings]="rental.bookings"
+                  ></app-manage-rental-booking>
+                </span>
+                
+                &nbsp;
+                <a class="btn btn-warning" routerLink="/home/tabs/rentals/{{ rental._id }}/edit">Edit</a>
+              </div>
+              <div class="card-footer text-muted">
+                <p>Created at {{ rental.createdAt | formatDate }}</p>
+                &nbsp;
+                <button
+                  (click)="rentalDeleteIndex = i"
+                  *ngIf="rentalDeleteIndex !== i"
+                  type="button"
+                  class="btn btn-danger"
+                >
+                  Delete
+                </button>
+
+                <div *ngIf="rentalDeleteIndex === i">
+                  <p class="confirm-message">Do you confirm delete?</p>
+                  <button
+                    (click)="deleteRental(rental._id)"
+                    class="btn btn-success"
+                  >
+                    Yes</button
+                  >&nbsp;
+                  <button
+                    (click)="rentalDeleteIndex = undefined"
+                    class="btn btn-danger"
+                  >
+                    No
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </ion-virtual-scroll>
+  </ng-container>
+  <div *ngIf="!isLoading && rentals && rentals.length === 0" class="col-md-8">
+    <div class="alert alert-warning">
+      You don't have any rentals currently created. If you want advertised your
+      property please follow this link.
+      <a class="btn btn-success" routerLink="/home/tabs/rentals/new"
+        >Register Rental</a
+      >
+    </div>
+  </div>
+</ion-content>

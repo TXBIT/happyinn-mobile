@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title text-center>Search Result</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid *ngIf="!isLoading">
+    <ion-row>
+      <ion-col size-sm="8" offset-sm="2">
+        <div
+          *ngIf="rentals.length > 0"
+          class="search-message alert alert-primary"
+        >
+          <p>Your Home in {{ city | lowercase | ucwords }}</p>
+        </div>
+        <div
+          *ngIf="errors.length > 0"
+          class="search-message alert alert-warning"
+        >
+          <p *ngFor="let error of errors" class="">
+            {{ error.message | lowercase | ucwords }}
+          </p>
+        </div>
+        <ion-virtual-scroll [items]="rentals" approxItemHeight="100px">
+          <ion-card
+            routerDirection="forward"
+            [routerLink]="['/', 'home', 'tabs', 'rentals', rental._id]"
+            *virtualItem="let rental"
+          >
+            <ion-card-header>
+              <h2 text-capitalize text-center>{{ rental.title }}</h2>
+            </ion-card-header>
+            <ion-item detail>
+              <img [src]="rental.image" alt="" class="card-image" />
+            </ion-item>
+            <ion-card-content>
+              <h6 class="card-subtitle {{ rental.category }}" text-capitalize>
+                {{ rental.shared ? 'Shared' : 'Entire' }}
+                {{ rental.category }} &#183;
+                {{ rental.city }}
+              </h6>
+              <h4 class="card-title">{{ rental.title }}</h4>
+              <p class="card-text">
+                ${{ rental.dailyRate }} per Night &#183; Free Cancellation
+              </p>
+            </ion-card-content>
+          </ion-card>
+        </ion-virtual-scroll>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

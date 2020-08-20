@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title text-center>manage</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-card>
+      <ion-card-header>Manage Rentals</ion-card-header>
+      <ion-card-content>
+        <ion-button
+          expand="block"
+          fill="outline"
+          color="secondary"
+          [routerLink]="['/home/tabs/manage/rentals']"
+        >
+          <ion-icon slot="icon-only" name="trending-up"></ion-icon>
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+    <ion-card>
+      <ion-card-header>Manage Pending Payments</ion-card-header>
+      <ion-card-content>
+        <ion-button
+          expand="block"
+          fill="outline"
+          color="secondary"
+          [routerLink]="['/home/tabs/manage/pending-payments']"
+        >
+          <ion-icon slot="icon-only" name="albums"></ion-icon>
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+    <ion-card>
+      <ion-card-header>Manage Bookings</ion-card-header>
+      <ion-card-content>
+        <ion-button
+          expand="block"
+          fill="outline"
+          color="secondary"
+          [routerLink]="['/home/tabs/manage/bookings']"
+        >
+          <ion-icon slot="icon-only" name="reorder"></ion-icon>
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+    <ion-card>
+      <ion-card-header>Manage User Details</ion-card-header>
+      <ion-card-content>
+        <ion-button
+          expand="block"
+          fill="outline"
+          color="secondary"
+          [routerLink]="['/home/tabs/manage/user-details']"
+        >
+          <ion-icon slot="icon-only" name="person"></ion-icon>
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+</ion-content>

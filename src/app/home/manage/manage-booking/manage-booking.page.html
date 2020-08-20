@@ -1,0 +1,116 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <!-- <ion-back-button
+        routerLink="/home/tabs/manage"
+        routerDirection="backward"
+      ></ion-back-button> -->
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title text-center>My Bookings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container *ngIf="!isLoading && bookings && bookings.length > 0">
+    <ion-virtual-scroll [items]="bookings">
+      <section id="userBookings" *virtualItem="let booking; let i = index">;
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card text-center">
+              <div class="card-header">
+                {{
+                  booking.rental ? booking.rental.category : 'Deleted rental'
+                }}
+                <!-- rental category -->
+              </div>
+              <div class="card-block">
+                <ng-container *ngIf="booking.rental">
+                  <h4 class="card-title">
+                    {{ booking.rental.title }} - {{ booking.rental.city }}
+                  </h4>
+                  <!-- rental title and city -->
+                  <p class="card-text booking-desc">
+                    {{ booking.rental.description }}
+                  </p>
+                  <!-- rental description -->
+                  <p class="card-text booking-days">
+                    {{ booking.startAt | formatDate }} - {{ booking.endAt | formatDate }} |
+                    {{ booking.days }} days
+                  </p>
+                  <!-- booking startAt - endAt | days -->
+                  <p class="card-text booking-price">
+                    <span>Price: </span>
+                    <span class="booking-price-value"
+                      >$ {{ booking.totalPrice }}</span
+                    >
+                  </p>
+                  <!-- booking price -->
+                  <a
+                    *ngIf="booking.rental"
+                    class="btn btn-danger"
+                    routerLink="/home/tabs/rentals/{{ booking.rental._id }}"
+                    >Go to Rental</a
+                  >
+                  <!-- link to rental detail -->
+                </ng-container>
+              </div>
+              <div class="card-footer text-muted">
+                Created {{ booking.createdAt | formatDate }}
+                <app-review
+                  *ngIf="!booking.review && isExpired(booking.endAt)"
+                  [bookingId]=" booking._id"
+                  (reviewSubmitted)="reviewPublished(i, $event)"
+                ></app-review>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </ion-virtual-scroll>
+  </ng-container>
+
+  <div
+    *ngIf="!isLoading && bookings && bookings.length === 0"
+    class="alert alert-warning"
+  >
+    You have no bookings created go to rentals section and book your place
+    today.
+    <a class="btn btn-success" routerLink="/home/tabs/rentals">Available Rentals</a>
+  </div>
+  
+</ion-content>
+
+<!-- <p *ngFor="let booking of bookings">
+  {{ booking.startAt }}
+  {{ booking.endAt }}
+</p> -->
+<!-- <ion-row>
+  <ion-col size-sm="8" offset-sm="2">
+    <ion-virtual-scroll [items]="bookings" approxItemHeight="100px">
+      <ion-card
+        routerDirection="forward"
+        *virtualItem="let booking"
+        [routerLink]="['/', 'home', 'tabs', 'rentals', booking.rental._id]"
+      >
+        <ion-card-header>
+          <h2 text-capitalize text-center>{{ booking.rental.title }}</h2>
+        </ion-card-header>
+        <ion-item detail>
+          <img [src]="booking.rental.image" alt="" class="card-image" />
+        </ion-item>
+        <ion-card-content>
+          <h6 class="card-subtitle {{ booking.rental.category }}" text-capitalize>
+            {{ booking.rental.shared ? 'Shared' : 'Entire' }}
+            {{ booking.rental.category }} &#183;
+            {{ booking.rental.city }}
+          </h6>
+          <h4 class="card-title">{{ booking.rental.title }}</h4>
+          <p class="card-text">
+            ${{ booking.rental.dailyRate }} per Night &#183; Free Cancellation
+          </p>
+        </ion-card-content>
+      </ion-card>
+    </ion-virtual-scroll>
+  </ion-col>
+</ion-row> -->

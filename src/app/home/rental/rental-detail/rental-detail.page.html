@@ -1,0 +1,166 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <!-- <ion-back-button routerLink="/home/tabs/rentals" routerDirection="backward"></ion-back-button> -->
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title text-center>{{ rental.title }} - Detail</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid *ngIf="!isLoading" class="rental-detail">
+    <ion-row>
+      <ion-col size-sm="8" offset-sm="2">
+        <ion-img src="{{ rental.image }}"></ion-img>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-sm="8" offset-sm="2">
+        <app-map
+          [location]="rental.city + ', ' + rental.street"
+        ></app-map>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-sm="8" offset-sm="2">
+        <div class="rental-owner">
+          <img
+            src="https://api.adorable.io/avatars/285/abott@adorable.png"
+            alt=""
+          />
+          <span> {{ rental.user.username }} </span>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-sm="8" offset-sm="2">
+        <h2 class="rental-type {{ rental.category }}">
+          {{ rental.shared ? 'Shared' : 'Entire' }}
+          {{ rental.category | myUpper }} ${{ rental.dailyRate }}
+          <span class="booking-per-night">per night</span>
+        </h2>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-sm="8" offset-sm="2">
+        <h1 class="rental-title">{{ rental.title }}</h1>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-sm="8" offset-sm="2">
+        <h3 class="rental-city">{{ rental.city | lowercase | ucwords }}</h3>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-sm="8" offset-sm="2">
+        <h3 class="rental-city">{{ rental.street | lowercase | ucwords }}</h3>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-sm="8" offset-sm="2">
+        <div class="rental-room-info">
+          <span
+            ><i class="fa fa-building"></i> {{ rental.bedrooms }} bedrooms</span
+          >
+          &ngsp;
+          <span
+            ><i class="fa fa-user"></i> {{ rental.bedrooms + 4 }} guests</span
+          >
+          &ngsp;
+          <span><i class="fa fa-bed"></i> {{ rental.bedrooms + 2 }} beds</span>
+          &ngsp;
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-sm="8" offset-sm="2">
+        <p class="rental-description">
+          {{ rental.description }}
+        </p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-sm="8" offset-sm="2">
+        <div class="rental-rating">
+          <span>{{ rating }} / 5</span>
+        </div>
+      </ion-col>
+    </ion-row>
+    <hr>
+    <ion-row>
+      <ion-col size-sm="8" offset-sm="2"><h3 class="title">Assets</h3></ion-col>
+    </ion-row>
+
+    <ion-row class="rental-assets">
+      <ion-col size-sm="4" offset-sm="2">
+        <div><ion-icon name="snow"></ion-icon> Cooling</div>
+        <div><ion-icon name="thermometer"></ion-icon> Heating</div>
+        <div><ion-icon name="cog"></ion-icon> Iron</div>
+      </ion-col>
+      <ion-col size-sm="4">
+        <div><ion-icon name="desktop"></ion-icon> Working Area</div>
+        <div><ion-icon name="cube"></ion-icon> Washing Machine</div>
+        <div><ion-icon name="aperture"></ion-icon> Dishwasher</div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col offset-sm="2">
+        <h3>Reviews</h3>
+      </ion-col>
+    </ion-row>
+
+    <ng-container *ngIf="reviews">
+      <ion-list class="review-container" *ngFor="let review of reviews">
+        <ion-row class="review-detail">
+          <ion-col size="4" size-sm="2" offset-sm="2">
+            <img
+              src="https://api.adorable.io/avatars/285/abott@adorable.png"
+              alt=""
+            />
+            <div>
+              <a
+                ><strong>{{ review.user.username }}</strong></a
+              >
+            </div>
+            <p>
+              {{ formatDate(review.createdAt) }}
+            </p>
+          </ion-col>
+          <ion-col size="8" size-sm="6">
+            <div class="review-star">
+              <rating [rate]="review.rating" readonly="true" size="default">
+              </rating>
+            </div>
+            <p>{{ review.text }}</p>
+          </ion-col>
+        </ion-row>
+      </ion-list>
+    </ng-container>
+  </ion-grid>
+</ion-content>
+
+<ion-footer *ngIf="!isLoading">
+  <ion-button *ngIf="userId != rental.user._id"
+    expand="full"
+    [routerLink]="['/home/tabs/rentals/', rental._id, 'booking']"
+  >
+    Book This Place
+  </ion-button>
+
+  <ion-button *ngIf="userId == rental.user._id"
+    expand="full"
+    [routerLink]="['/home/tabs/rentals/', rental._id, 'edit']"
+  >
+    Edit This Rental
+  </ion-button>
+</ion-footer>

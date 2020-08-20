@@ -1,0 +1,67 @@
+<ion-header>
+  <ion-toolbar color="primary-contrast">
+    <ion-title color="primary" text-center
+      >Happy Inn <img src="assets/images/happy-inn.jpg" alt=""
+    /></ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="loginForm" (ngSubmit)="login()">
+    <ion-grid>
+      <ion-row *ngIf="notifyMessage" class="alert alert-success">
+        <ion-col no-padding>{{ notifyMessage }}</ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">Email</ion-label>
+              <ion-input
+                type="email"
+                name="email"
+                formControlName="email"
+              ></ion-input>
+            </ion-item>
+            <div *ngIf="isInvalidForm('email')" no-padding>
+              <div *ngIf="isRequired('email')" class="alert alert-danger">
+                Email is required
+              </div>
+              <div *ngIf="isValidFormat('email')" class="alert alert-danger">
+                Invalid email format
+              </div>
+            </div>
+            <ion-item>
+              <ion-label position="floating">Password</ion-label>
+              <ion-input
+                type="password"
+                name="password"
+                formControlName="password"
+              ></ion-input>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="6">
+          <ion-button
+            type="submit"
+            name="login"
+            color="primary"
+            expand="full"
+            [disabled]="!loginForm.valid"
+            >Login</ion-button
+          >
+        </ion-col>
+      </ion-row>
+      
+      <ion-row *ngIf="errors && errors.length > 0" class="alert alert-danger">
+        <ion-col *ngFor="let error of errors" no-padding>
+          {{ error }}
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

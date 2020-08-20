@@ -1,0 +1,172 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="['/home/tabs/manage/rentals']" routerDirection="backward"></ion-back-button>
+      <!-- <ion-menu-button></ion-menu-button> -->
+    </ion-buttons>
+    <ion-title text-center>{{ rental.title }} - Detail</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="rental-detail">
+    <ion-row>
+      <ion-col size-sm="8" offset-sm="2">
+        <app-editable-image
+          [(entity)]="rental"
+          [field]="'image'"
+          (entityUpdated)="updateRental(rental._id, $event)"
+        ></app-editable-image>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-sm="8" offset-sm="2">
+        <app-map
+          *ngIf="!isLoading"
+          [locationSubject]="locationSubject"
+          [location]="rental.city + ', ' + rental.street"
+        ></app-map>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-sm="8" offset-sm="2">
+        <div class="rental-owner">
+          <img
+            src="https://api.adorable.io/avatars/285/abott@adorable.png"
+            alt=""
+          />
+          <span> {{ rental.user.username }} </span>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-sm="8" offset-sm="2">
+        <h2 class="rental-type {{ rental.category }}">
+          Shared: 
+          <app-editable-select
+            [(entity)]="rental"
+            [field]="'shared'"
+            [options]="[true, false]"
+            [style]="{ 'display': 'inline-block' }"
+            [className]="'rental-shared'"
+            (entityUpdated)="updateRental(rental._id, $event)"
+          ></app-editable-select>
+
+          <br />
+          Category: 
+          <app-editable-select
+            [(entity)]="rental"
+            [field]="'category'"
+            [options]="rentalCategories"
+            [style]="{ 'display': 'inline-block' }"
+            [className]="'rental-category'"
+            (entityUpdated)="updateRental(rental._id, $event)"
+          ></app-editable-select>
+        </h2>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-sm="8" offset-sm="2">
+        <app-editable-input
+          [(entity)]="rental"
+          [field]="'title'"
+          [className]="'rental-title'"
+          (entityUpdated)="updateRental(rental._id, $event)"
+        ></app-editable-input>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-sm="8" offset-sm="2">
+        <app-editable-input
+          [(entity)]="rental"
+          [field]="'city'"
+          [transformView]="transformLocation"
+          [className]="'rental-city'"
+          (entityUpdated)="updateRental(rental._id, $event)"
+        ></app-editable-input>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-sm="8" offset-sm="2">
+        <app-editable-input
+          [(entity)]="rental"
+          [field]="'street'"
+          [transformView]="transformLocation"
+          [className]="'rental-street'"
+          (entityUpdated)="updateRental(rental._id, $event)"
+        ></app-editable-input>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-sm="8" offset-sm="2">
+        <div class="rental-room-info">
+          <span>
+            <i class="fa fa-building"></i>
+            <app-editable-input
+              [(entity)]="rental"
+              [field]="'bedrooms'"
+              [type]="'number'"
+              [style]="{ 'display': 'inline-block' }"
+              [className]="'rental-bedrooms'"
+              (entityUpdated)="updateRental(rental._id, $event)"
+            ></app-editable-input>
+            bedrooms
+          </span>
+          &nbsp;
+          <span
+            ><i class="fa fa-user"></i> {{ countBedroomsAssets(4) }} guests</span
+          >
+          &nbsp;
+          <span><i class="fa fa-bed"></i> {{ countBedroomsAssets(2) }} beds</span>
+          &nbsp;
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-sm="8" offset-sm="2">
+        <app-editable-textarea
+          [(entity)]="rental"
+          [field]="'description'"
+          [className]="'rental-description'"
+          [rows]="'6'"
+          [cols]="'50'"
+          (entityUpdated)="updateRental(rental._id, $event)"
+        ></app-editable-textarea>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-sm="8" offset-sm="2">
+        <div class="rental-rating">
+          <span>5 / 5</span>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-sm="8" offset-sm="2"><h3 class="title">Assets</h3></ion-col>
+    </ion-row>
+
+    <ion-row class="rental-assets">
+      <ion-col size-sm="4" offset-sm="2">
+        <div><ion-icon name="snow"></ion-icon> Cooling</div>
+        <div><ion-icon name="thermometer"></ion-icon> Heating</div>
+        <div><ion-icon name="cog"></ion-icon> Iron</div>
+      </ion-col>
+      <ion-col size-sm="4">
+        <div><ion-icon name="desktop"></ion-icon> Working Area</div>
+        <div><ion-icon name="cube"></ion-icon> Washing Machine</div>
+        <div><ion-icon name="aperture"></ion-icon> Dishwasher</div>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+</ion-content>

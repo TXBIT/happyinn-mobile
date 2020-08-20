@@ -1,0 +1,29 @@
+.create-rental-form-container {
+  margin-bottom: 10px;
+
+  color: var(--ion-color-dark);
+
+  form {
+    margin-bottom: 10px;
+  }
+
+  .alert {
+    p {
+      margin: 0;
+    }
+  }
+
+  h1 {
+    font-weight: 700;
+    margin-bottom: 30px;
+  }
+
+  label {
+    font-size: 12px;
+  }
+
+  .form-text {
+    font-size: 13px;
+  }
+}
+

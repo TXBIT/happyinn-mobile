@@ -1,0 +1,121 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button
+        [defaultHref]="['/home/tabs/rentals', rental._id]"
+      ></ion-back-button>
+      <!-- <ion-menu-button></ion-menu-button> -->
+    </ion-buttons>
+    <ion-title text-center>{{ rental.title }} - Booking</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid *ngIf="!isLoading">
+    <ion-row>
+      <ion-col size-sm="6" offset-sm="3" no-padding>
+        <div class="booking">
+          <form #bookingForm="ngForm">
+            <label for="">Dates</label>
+            <input
+              type="text"
+              name="daterangeInput"
+              id="daterangeInput"
+              class="form-control daterangepicker-input"
+              daterangepicker
+              [options]="options"
+              (selected)="selectedDate($event, daterange)"
+            />
+
+            <div class="form-group">
+              <label for="">Guests</label>
+              <input
+                [(ngModel)]="newBooking.guests"
+                type="number"
+                name="guests"
+                id="guests"
+                class="form-control"
+                aria-describedby="emailHelp"
+                required
+              />
+            </div>
+          </form>
+
+          <button
+            [disabled]="
+              !bookingForm.form.valid ||
+              !newBooking.startAt ||
+              !newBooking.endAt ||
+              newBooking.guests === 0
+            "
+            class="btn btn-danger btn-confirm btn-block"
+            (click)="openConfirmModal(content)"
+          >
+            Reserve this place now!
+          </button>
+
+          <hr />
+
+          <h3 class="booking-price">
+            ${{ rental.dailyRate }}
+            <span class="booking-per-night">per night</span>
+          </h3>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ng-template #content let-modal let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h6 class="modal-title">
+        <p>{{ newBooking.startAt }} to {{ newBooking.endAt }}</p>
+      </h6>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <em>{{ newBooking.days }}</em> nights / $<em>{{ rental.dailyRate }}</em>
+      per Night
+      <p>
+        Guests: <em>{{ newBooking.guests }}</em>
+      </p>
+      <p>
+        Price: <em>${{ newBooking.totalPrice }}</em>
+      </p>
+
+      <app-payment
+        (paymentConfirmed)="onPaymentConfirmed($event)"
+      ></app-payment>
+    </div>
+
+    <div *ngIf="errors.length > 0" class="alert alert-danger modal-error">
+      <p *ngFor="let error of errors">
+        {{ error.message }}
+      </p>
+    </div>
+
+    <div class="modal-footer">
+      <button
+        [disabled]="!newBooking.paymentToken"
+        type="button"
+        class="btn btn-success"
+        (click)="createBooking()"
+      >
+        Confirm
+      </button>
+      <button
+        type="button"
+        class="btn btn-danger"
+        (click)="modal.close('Close click')"
+      >
+        Close
+      </button>
+    </div>
+  </ng-template>
+</ion-content>

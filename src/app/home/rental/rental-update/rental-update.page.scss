@@ -1,0 +1,35 @@
+.rental-detail {
+
+  .rental-owner {
+    float: left;
+      
+    img {
+      height: 50px;
+      border-radius: 50%;
+      display: block;
+      margin: 0 auto;
+    }
+
+    span {
+      display: block;
+      font-size: 13px;
+      font-weight: 300;
+    }
+  }
+
+  .review-container {
+    .review-detail {
+      border-bottom: 1px solid var(--ion-color-tertiary);
+
+      img {
+        height: 50px;
+        border-radius: 50%;
+      }
+  
+      .review-star {
+        float: right;
+      }
+    }
+  }
+
+}

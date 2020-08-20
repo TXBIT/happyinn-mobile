@@ -1,0 +1,22 @@
+.form-inline {
+  background-color: var(--ion-color-light-tint);
+}
+
+.happy-inn-search {
+  width: 250px;
+  height: 40px;
+  margin: 5px 30px 6px 10px;
+}
+
+.btn-happy-inn-search {
+  border-color: var(--ion-color-primary);
+  color: var(--ion-color-primary);
+
+  &:hover, &:focus, &:active {
+    background-color: var(--ion-color-primary);
+    border-color: var(--ion-color-primary) !important;
+    color: var(--ion-color-secondary) !important;
+    box-shadow: none;
+  }
+
+}

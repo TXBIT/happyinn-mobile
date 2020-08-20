@@ -1,0 +1,86 @@
+<ion-header>
+  <ion-toolbar color="primary-contrast">
+    <ion-title color="primary" text-center
+      >Happy Inn <img src="assets/images/happy-inn.jpg" alt=""
+    /></ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form #registerForm="ngForm">
+    <ion-grid>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">Username</ion-label>
+              <ion-input
+                [(ngModel)]="formData.username"
+                #username="ngModel"
+                type="text"
+                name="username"
+                required
+              ></ion-input>
+            </ion-item>
+            <div
+              *ngIf="username.invalid && (username.dirty || username.touched)"
+              class="alert alert-danger"
+            >
+              <div *ngIf="username?.errors.required">
+                Username is required
+              </div>
+            </div>
+
+            <ion-item>
+              <ion-label position="floating">Email</ion-label>
+              <ion-input
+                [(ngModel)]="formData.email"
+                type="email"
+                name="email"
+                required
+              ></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="floating">Password</ion-label>
+              <ion-input
+                [(ngModel)]="formData.password"
+                type="password"
+                name="password"
+                required
+              ></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="floating">Confirm Password</ion-label>
+              <ion-input
+                [(ngModel)]="formData.passwordConfirmation"
+                type="password"
+                name="password"
+                required
+              ></ion-input>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="6">
+          <ion-button
+            type="submit"
+            name="register"
+            color="primary"
+            expand="full"
+            (click)="register()"
+            [disabled]="!registerForm.form.valid"
+            >Register</ion-button
+          >
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="errors && errors.length > 0" class="alert alert-danger">
+        <ion-col *ngFor="let error of errors" no-padding>
+          {{ error }}
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>
